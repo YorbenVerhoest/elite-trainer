@@ -104,10 +104,17 @@ export function useBluetooth() {
 
       // Get control point characteristic
       const controlPoint = await service.getCharacteristic(CONTROL_POINT)
+      // FTMS spec §4.16: the server must not process any CP procedure unless the
+      // client has configured the CP characteristic for indications first.
+      await controlPoint.startNotifications()
       controlPointRef.current = controlPoint
 
-      // Request control of the trainer
-      await controlPoint.writeValueWithResponse(new Uint8Array([OP_REQUEST_CONTROL]))
+      // Request control — non-fatal if the device rejects it.
+      try {
+        await controlPoint.writeValueWithResponse(new Uint8Array([OP_REQUEST_CONTROL]))
+      } catch {
+        // ignore
+      }
 
       setConnectionState('connected')
     } catch (err) {
@@ -131,20 +138,28 @@ export function useBluetooth() {
   const setTargetPower = useCallback(async (watts: number) => {
     const cp = controlPointRef.current
     if (!cp) return
-    // OP_SET_TARGET_POWER + int16 little-endian
-    const buf = new ArrayBuffer(3)
-    const view = new DataView(buf)
-    view.setUint8(0, OP_SET_TARGET_POWER)
-    view.setInt16(1, watts, true)
-    await cp.writeValueWithResponse(new Uint8Array(buf))
+    try {
+      // OP_SET_TARGET_POWER + int16 little-endian
+      const buf = new ArrayBuffer(3)
+      const view = new DataView(buf)
+      view.setUint8(0, OP_SET_TARGET_POWER)
+      view.setInt16(1, watts, true)
+      await cp.writeValueWithResponse(new Uint8Array(buf))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to set power')
+    }
   }, [])
 
   const setTargetResistance = useCallback(async (level: number) => {
     const cp = controlPointRef.current
     if (!cp) return
-    // OP_SET_TARGET_RESISTANCE + uint8 (level * 10 for 0.1 resolution)
-    const buf = new Uint8Array([OP_SET_TARGET_RESISTANCE, Math.round(level * 10)])
-    await cp.writeValueWithResponse(buf)
+    try {
+      // OP_SET_TARGET_RESISTANCE + uint8 (level * 10 for 0.1 resolution)
+      const buf = new Uint8Array([OP_SET_TARGET_RESISTANCE, Math.round(level * 10)])
+      await cp.writeValueWithResponse(buf)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to set resistance')
+    }
   }, [])
 
   const startResume = useCallback(async () => {
