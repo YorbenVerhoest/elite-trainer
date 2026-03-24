@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useBluetooth } from './hooks/useBluetooth'
 import { useStrava } from './hooks/useStrava'
+import { useHRM } from './hooks/useHRM'
 import { ConnectScreen } from './components/ConnectScreen'
 import { StravaConnect } from './components/StravaConnect'
+import { HRMConnect } from './components/HRMConnect'
 import { Dashboard } from './components/Dashboard'
 import { ResistanceControl } from './components/ResistanceControl'
 import { ProgramEditor } from './components/ProgramEditor'
@@ -70,12 +72,19 @@ export default function App() {
     setTargetResistance,
     startResume,
     stopPause,
+    setExternalHeartRate,
     startRecording,
     stopRecording,
   } = useBluetooth()
 
   const strava = useStrava()
+  const hrm = useHRM()
   const [workoutRecord, setWorkoutRecord] = useState<WorkoutRecord | null>(null)
+
+  // Feed HRM heart rate into the trainer recording
+  useEffect(() => {
+    setExternalHeartRate(hrm.heartRate)
+  }, [hrm.heartRate, setExternalHeartRate])
 
   // Handle Strava OAuth redirect callback
   useEffect(() => {
@@ -107,6 +116,9 @@ export default function App() {
 
   const isConnected = connectionState === 'connected'
 
+  // Prefer HRM heart rate over any trainer-reported value
+  const displayMetrics = { ...metrics, heartRate: hrm.heartRate ?? metrics.heartRate }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6">
@@ -124,12 +136,13 @@ export default function App() {
               onDisconnect={disconnect}
             />
           </div>
+          <HRMConnect hrm={hrm} />
           <StravaConnect strava={strava} />
         </div>
 
         {/* Live metrics — always visible but dimmed when disconnected */}
         <div className={isConnected ? '' : 'opacity-40 pointer-events-none'}>
-          <Dashboard metrics={metrics} />
+          <Dashboard metrics={displayMetrics} />
         </div>
 
         {/* Controls — only shown when connected */}

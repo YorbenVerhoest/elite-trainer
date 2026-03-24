@@ -67,6 +67,7 @@ export function useBluetooth() {
   const controlPointRef = useRef<BluetoothRemoteGATTCharacteristic | null>(null)
   const metricsRef = useRef<TrainerMetrics>(DEFAULT_METRICS)
   const recordingRef = useRef<{ startTime: number; dataPoints: WorkoutDataPoint[] } | null>(null)
+  const externalHeartRateRef = useRef<number | null>(null)
 
   const connect = useCallback(async () => {
     if (!navigator.bluetooth) {
@@ -111,7 +112,7 @@ export function useBluetooth() {
             power: updated.power,
             cadence: updated.cadence,
             speed: updated.speed,
-            heartRate: updated.heartRate,
+            heartRate: externalHeartRateRef.current ?? updated.heartRate,
           })
         }
       })
@@ -189,6 +190,10 @@ export function useBluetooth() {
     await cp.writeValueWithResponse(new Uint8Array([OP_STOP_PAUSE, 0x01]))
   }, [])
 
+  const setExternalHeartRate = useCallback((rate: number | null) => {
+    externalHeartRateRef.current = rate
+  }, [])
+
   const startRecording = useCallback(() => {
     recordingRef.current = { startTime: Date.now(), dataPoints: [] }
   }, [])
@@ -214,6 +219,7 @@ export function useBluetooth() {
     setTargetResistance,
     startResume,
     stopPause,
+    setExternalHeartRate,
     startRecording,
     stopRecording,
   }
