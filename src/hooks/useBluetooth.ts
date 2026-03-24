@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
-import type { TrainerMetrics, ConnectionState } from '../types/bluetooth'
+import type { TrainerMetrics, ConnectionState, WorkoutDataPoint, WorkoutRecord } from '../types/bluetooth'
 import {
   FTMS_SERVICE,
   INDOOR_BIKE_DATA,
@@ -65,6 +65,8 @@ export function useBluetooth() {
 
   const deviceRef = useRef<BluetoothDevice | null>(null)
   const controlPointRef = useRef<BluetoothRemoteGATTCharacteristic | null>(null)
+  const metricsRef = useRef<TrainerMetrics>(DEFAULT_METRICS)
+  const recordingRef = useRef<{ startTime: number; dataPoints: WorkoutDataPoint[] } | null>(null)
 
   const connect = useCallback(async () => {
     if (!navigator.bluetooth) {
@@ -87,6 +89,7 @@ export function useBluetooth() {
       device.addEventListener('gattserverdisconnected', () => {
         setConnectionState('disconnected')
         setMetrics(DEFAULT_METRICS)
+        metricsRef.current = DEFAULT_METRICS
         controlPointRef.current = null
       })
 
@@ -99,7 +102,18 @@ export function useBluetooth() {
       bikeDataChar.addEventListener('characteristicvaluechanged', (event) => {
         const value = (event.target as BluetoothRemoteGATTCharacteristic).value!
         const parsed = parseIndoorBikeData(value)
-        setMetrics((prev) => ({ ...prev, ...parsed }))
+        const updated: TrainerMetrics = { ...metricsRef.current, ...parsed }
+        metricsRef.current = updated
+        setMetrics(updated)
+        if (recordingRef.current) {
+          recordingRef.current.dataPoints.push({
+            timestamp: Date.now() - recordingRef.current.startTime,
+            power: updated.power,
+            cadence: updated.cadence,
+            speed: updated.speed,
+            heartRate: updated.heartRate,
+          })
+        }
       })
 
       // Get control point characteristic
@@ -175,6 +189,21 @@ export function useBluetooth() {
     await cp.writeValueWithResponse(new Uint8Array([OP_STOP_PAUSE, 0x01]))
   }, [])
 
+  const startRecording = useCallback(() => {
+    recordingRef.current = { startTime: Date.now(), dataPoints: [] }
+  }, [])
+
+  const stopRecording = useCallback((): WorkoutRecord | null => {
+    if (!recordingRef.current) return null
+    const { startTime, dataPoints } = recordingRef.current
+    recordingRef.current = null
+    return {
+      startedAt: new Date(startTime),
+      durationSeconds: Math.round((Date.now() - startTime) / 1000),
+      dataPoints,
+    }
+  }, [])
+
   return {
     connectionState,
     metrics,
@@ -185,5 +214,7 @@ export function useBluetooth() {
     setTargetResistance,
     startResume,
     stopPause,
+    startRecording,
+    stopRecording,
   }
 }

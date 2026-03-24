@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useBluetooth } from './hooks/useBluetooth'
+import { useStrava } from './hooks/useStrava'
 import { ConnectScreen } from './components/ConnectScreen'
 import { Dashboard } from './components/Dashboard'
 import { ResistanceControl } from './components/ResistanceControl'
 import { ProgramEditor } from './components/ProgramEditor'
+import { WorkoutSummary } from './components/WorkoutSummary'
+import type { WorkoutRecord } from './types/bluetooth'
 
 type Tab = 'manual' | 'program'
 
@@ -66,7 +69,37 @@ export default function App() {
     setTargetResistance,
     startResume,
     stopPause,
+    startRecording,
+    stopRecording,
   } = useBluetooth()
+
+  const strava = useStrava()
+  const [workoutRecord, setWorkoutRecord] = useState<WorkoutRecord | null>(null)
+
+  // Handle Strava OAuth redirect callback
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('code')
+    const state = params.get('state')
+    if (code && state === 'strava_oauth') {
+      window.history.replaceState({}, '', window.location.pathname)
+      strava.handleCallback(code)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function handleWorkoutStart() {
+    startRecording()
+    startResume()
+  }
+
+  function handleWorkoutStop() {
+    stopPause()
+    const record = stopRecording()
+    if (record && record.dataPoints.length > 0) {
+      strava.resetUpload()
+      setWorkoutRecord(record)
+    }
+  }
 
   const isConnected = connectionState === 'connected'
 
@@ -97,8 +130,8 @@ export default function App() {
           <Tabs
             setTargetPower={setTargetPower}
             setTargetResistance={setTargetResistance}
-            onStart={startResume}
-            onStop={stopPause}
+            onStart={handleWorkoutStart}
+            onStop={handleWorkoutStop}
           />
         ) : (
           <div className="bg-gray-800/50 rounded-xl p-10 text-center text-gray-500 text-sm">
@@ -106,6 +139,14 @@ export default function App() {
           </div>
         )}
       </div>
+
+      {workoutRecord && (
+        <WorkoutSummary
+          record={workoutRecord}
+          onClose={() => setWorkoutRecord(null)}
+          strava={strava}
+        />
+      )}
     </div>
   )
 }
