@@ -140,15 +140,21 @@ function StravaStatus({
     )
   }
 
-  // Connected but upload hasn't fired yet (shouldn't normally happen)
+  // Connected, waiting for user choice
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-sm text-gray-500">Ready to upload</span>
+    <div className="flex gap-2">
       <button
         onClick={() => strava.uploadWorkout(record)}
-        className="text-sm text-orange-400 hover:text-orange-300 transition-colors"
+        className="flex-1 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-sm font-medium transition-colors"
       >
-        Upload now
+        Upload to Strava
+      </button>
+      <button
+        onClick={() => strava.downloadTCX(record)}
+        className="py-2 px-4 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+        title="Download as TCX file"
+      >
+        ↓ TCX
       </button>
     </div>
   )

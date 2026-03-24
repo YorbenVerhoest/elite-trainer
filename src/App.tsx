@@ -108,9 +108,6 @@ export default function App() {
     if (record && record.dataPoints.length > 0) {
       strava.resetUpload()
       setWorkoutRecord(record)
-      if (strava.isConnected) {
-        strava.uploadWorkout(record)
-      }
     }
   }
 
