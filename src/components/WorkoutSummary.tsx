@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import type { WorkoutRecord } from '../types/bluetooth'
 import type { useStrava } from '../hooks/useStrava'
 
@@ -70,23 +69,33 @@ function StatCard({
   )
 }
 
-function StravaSection({
+function StravaStatus({
   record,
   strava,
 }: {
   record: WorkoutRecord
   strava: ReturnType<typeof useStrava>
 }) {
-  const [clientId, setClientId] = useState('')
-  const [clientSecret, setClientSecret] = useState('')
-  const [showSetup, setShowSetup] = useState(false)
+  if (!strava.isConnected) {
+    return (
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-500">Connect Strava in the header to auto-upload.</span>
+        <button
+          onClick={() => strava.downloadTCX(record)}
+          className="text-sm text-gray-400 hover:text-white transition-colors"
+        >
+          ↓ Download TCX
+        </button>
+      </div>
+    )
+  }
 
   if (strava.activityId) {
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-green-400 text-sm font-medium">
           <span>✓</span>
-          <span>Uploaded to Strava successfully</span>
+          <span>Uploaded to Strava</span>
         </div>
         <a
           href={`https://www.strava.com/activities/${strava.activityId}`}
@@ -94,97 +103,52 @@ function StravaSection({
           rel="noopener noreferrer"
           className="text-sm text-orange-400 hover:text-orange-300 underline"
         >
-          View on Strava →
+          View activity →
         </a>
       </div>
     )
   }
 
-  if (strava.isConnected) {
+  if (strava.isUploading) {
     return (
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-300">
-            Connected as <span className="text-white font-medium">{strava.athleteName}</span>
-          </span>
-          <button
-            onClick={strava.disconnect}
-            className="text-xs text-gray-500 hover:text-gray-300"
-          >
-            Disconnect
-          </button>
-        </div>
-        {strava.uploadError && (
-          <p className="text-sm text-red-400">{strava.uploadError}</p>
-        )}
-        <button
-          onClick={() => strava.uploadWorkout(record)}
-          disabled={strava.isUploading}
-          className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors text-sm"
-        >
-          {strava.isUploading ? 'Uploading…' : 'Upload to Strava'}
-        </button>
+      <div className="flex items-center gap-2 text-sm text-gray-400">
+        <div className="w-4 h-4 border-2 border-orange-400 border-t-transparent rounded-full animate-spin" />
+        <span>Uploading to Strava…</span>
       </div>
     )
   }
 
-  if (showSetup) {
+  if (strava.uploadError) {
     return (
-      <div className="flex flex-col gap-3">
-        <p className="text-xs text-gray-400 leading-relaxed">
-          Go to{' '}
-          <span className="text-gray-200 font-mono text-xs">strava.com/settings/api</span>, create
-          an app, and paste the credentials below. Set the{' '}
-          <strong className="text-gray-200">Authorization Callback Domain</strong> to{' '}
-          <span className="text-gray-200 font-mono text-xs">{window.location.hostname}</span>.
-        </p>
-        <input
-          type="text"
-          placeholder="Client ID"
-          value={clientId}
-          onChange={(e) => setClientId(e.target.value)}
-          className="bg-gray-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-500"
-        />
-        <input
-          type="password"
-          placeholder="Client Secret"
-          value={clientSecret}
-          onChange={(e) => setClientSecret(e.target.value)}
-          className="bg-gray-700 text-white rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-500"
-        />
-        <div className="flex gap-2">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm text-red-400 truncate">{strava.uploadError}</span>
+        <div className="flex gap-2 shrink-0">
           <button
-            onClick={() => setShowSetup(false)}
-            className="flex-1 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+            onClick={() => strava.uploadWorkout(record)}
+            className="text-sm text-orange-400 hover:text-orange-300 transition-colors"
           >
-            Cancel
+            Retry
           </button>
           <button
-            onClick={() => strava.authorize(clientId.trim(), clientSecret.trim())}
-            disabled={!clientId.trim() || !clientSecret.trim()}
-            className="flex-1 py-2 bg-orange-600 hover:bg-orange-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors"
+            onClick={() => strava.downloadTCX(record)}
+            className="text-sm text-gray-400 hover:text-white transition-colors"
           >
-            Connect Strava
+            ↓ TCX
           </button>
         </div>
       </div>
     )
   }
 
+  // Connected but upload hasn't fired yet (shouldn't normally happen)
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center justify-between">
+      <span className="text-sm text-gray-500">Ready to upload</span>
       <button
-        onClick={() => setShowSetup(true)}
-        className="flex-1 py-2.5 bg-orange-700 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors text-sm"
+        onClick={() => strava.uploadWorkout(record)}
+        className="text-sm text-orange-400 hover:text-orange-300 transition-colors"
       >
-        Connect Strava
-      </button>
-      <button
-        onClick={() => strava.downloadTCX(record)}
-        className="py-2.5 px-4 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
-        title="Download as TCX file"
-      >
-        ↓ TCX
+        Upload now
       </button>
     </div>
   )
@@ -246,10 +210,9 @@ export function WorkoutSummary({ record, onClose, strava }: Props) {
           )}
         </div>
 
-        {/* Strava */}
+        {/* Strava status */}
         <div className="border-t border-gray-700 pt-4">
-          <p className="text-xs uppercase tracking-widest text-gray-400 mb-3">Save to Strava</p>
-          <StravaSection record={record} strava={strava} />
+          <StravaStatus record={record} strava={strava} />
         </div>
       </div>
     </div>

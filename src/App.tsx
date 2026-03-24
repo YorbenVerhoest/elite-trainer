@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useBluetooth } from './hooks/useBluetooth'
 import { useStrava } from './hooks/useStrava'
 import { ConnectScreen } from './components/ConnectScreen'
+import { StravaConnect } from './components/StravaConnect'
 import { Dashboard } from './components/Dashboard'
 import { ResistanceControl } from './components/ResistanceControl'
 import { ProgramEditor } from './components/ProgramEditor'
@@ -98,6 +99,9 @@ export default function App() {
     if (record && record.dataPoints.length > 0) {
       strava.resetUpload()
       setWorkoutRecord(record)
+      if (strava.isConnected) {
+        strava.uploadWorkout(record)
+      }
     }
   }
 
@@ -107,17 +111,20 @@ export default function App() {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6">
         {/* Header */}
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Elite Trainer</h1>
-            <p className="text-sm text-gray-500">Elite Suito Pro controller</p>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">Elite Trainer</h1>
+              <p className="text-sm text-gray-500">Elite Suito Pro controller</p>
+            </div>
+            <ConnectScreen
+              connectionState={connectionState}
+              error={error}
+              onConnect={connect}
+              onDisconnect={disconnect}
+            />
           </div>
-          <ConnectScreen
-            connectionState={connectionState}
-            error={error}
-            onConnect={connect}
-            onDisconnect={disconnect}
-          />
+          <StravaConnect strava={strava} />
         </div>
 
         {/* Live metrics — always visible but dimmed when disconnected */}
