@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 interface Props {
+  isConnected: boolean
   onSetPower: (watts: number) => void
   onSetResistance: (level: number) => void
   onStart: () => void
@@ -9,7 +11,7 @@ interface Props {
 
 type Mode = 'power' | 'resistance'
 
-export function ResistanceControl({ onSetPower, onSetResistance, onStart, onStop }: Props) {
+export function ResistanceControl({ isConnected, onSetPower, onSetResistance, onStart, onStop }: Props) {
   const [mode, setMode] = useState<Mode>('power')
   const [powerValue, setPowerValue] = useState(150)
   const [resistanceValue, setResistanceValue] = useState(5)
@@ -17,8 +19,10 @@ export function ResistanceControl({ onSetPower, onSetResistance, onStart, onStop
   function handleApply() {
     if (mode === 'power') {
       onSetPower(powerValue)
+      toast.success(`Target power set to ${powerValue} W`)
     } else {
       onSetResistance(resistanceValue)
+      toast.success(`Resistance set to level ${resistanceValue}`)
     }
   }
 
@@ -95,19 +99,22 @@ export function ResistanceControl({ onSetPower, onSetResistance, onStart, onStop
       <div className="flex gap-3">
         <button
           onClick={handleApply}
-          className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors"
+          disabled={!isConnected}
+          className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
         >
           Apply
         </button>
         <button
           onClick={onStart}
-          className="py-2.5 px-4 bg-green-700 hover:bg-green-600 text-white rounded-lg font-medium transition-colors"
+          disabled={!isConnected}
+          className="py-2.5 px-4 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
         >
           Start
         </button>
         <button
           onClick={onStop}
-          className="py-2.5 px-4 bg-red-800 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+          disabled={!isConnected}
+          className="py-2.5 px-4 bg-red-800 hover:bg-red-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
         >
           Stop
         </button>

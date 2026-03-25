@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { WorkoutStep, WorkoutProgram } from '../types/bluetooth'
 
 interface Props {
+  isConnected: boolean
   onSetPower: (watts: number) => void
   onStart: () => void
   onStop: () => void
@@ -29,7 +30,7 @@ function formatTime(seconds: number) {
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 
-export function ProgramEditor({ onSetPower, onStart, onStop }: Props) {
+export function ProgramEditor({ isConnected, onSetPower, onStart, onStop }: Props) {
   const [program, setProgram] = useState<WorkoutProgram>(DEFAULT_PROGRAM)
   const [isRunning, setIsRunning] = useState(false)
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
@@ -212,10 +213,11 @@ export function ProgramEditor({ onSetPower, onStart, onStop }: Props) {
             </button>
             <button
               onClick={startWorkout}
-              disabled={program.steps.length === 0}
+              disabled={program.steps.length === 0 || !isConnected}
+              title={!isConnected ? 'Connect your trainer to start' : undefined}
               className="flex-1 py-2.5 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
             >
-              Start Workout
+              {isConnected ? 'Start Workout' : 'Connect Trainer to Start'}
             </button>
           </>
         ) : (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 import { useBluetooth } from './hooks/useBluetooth'
 import { useStrava } from './hooks/useStrava'
 import { useHRM } from './hooks/useHRM'
@@ -14,11 +15,13 @@ import type { WorkoutRecord } from './types/bluetooth'
 type Tab = 'manual' | 'program'
 
 function Tabs({
+  isConnected,
   setTargetPower,
   setTargetResistance,
   onStart,
   onStop,
 }: {
+  isConnected: boolean
   setTargetPower: (w: number) => void
   setTargetResistance: (l: number) => void
   onStart: () => void
@@ -49,13 +52,14 @@ function Tabs({
 
       {tab === 'manual' ? (
         <ResistanceControl
+          isConnected={isConnected}
           onSetPower={setTargetPower}
           onSetResistance={setTargetResistance}
           onStart={onStart}
           onStop={onStop}
         />
       ) : (
-        <ProgramEditor onSetPower={setTargetPower} onStart={onStart} onStop={onStop} />
+        <ProgramEditor isConnected={isConnected} onSetPower={setTargetPower} onStart={onStart} onStop={onStop} />
       )}
     </div>
   )
@@ -100,6 +104,7 @@ export default function App() {
   function handleWorkoutStart() {
     startRecording()
     startResume()
+    toast.success('Workout started')
   }
 
   function handleWorkoutStop() {
@@ -109,6 +114,7 @@ export default function App() {
       strava.resetUpload()
       setWorkoutRecord(record)
     }
+    toast('Workout stopped', { icon: '⏹' })
   }
 
   const isConnected = connectionState === 'connected'
@@ -118,6 +124,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      <Toaster position="bottom-center" toastOptions={{ style: { background: '#1f2937', color: '#fff', border: '1px solid #374151' } }} />
       <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6">
         {/* Header */}
         <div className="flex flex-col gap-3">
@@ -142,19 +149,14 @@ export default function App() {
           <Dashboard metrics={displayMetrics} />
         </div>
 
-        {/* Controls — only shown when connected */}
-        {isConnected ? (
-          <Tabs
-            setTargetPower={setTargetPower}
-            setTargetResistance={setTargetResistance}
-            onStart={handleWorkoutStart}
-            onStop={handleWorkoutStop}
-          />
-        ) : (
-          <div className="bg-gray-800/50 rounded-xl p-10 text-center text-gray-500 text-sm">
-            Connect your trainer to start controlling resistance and running programs.
-          </div>
-        )}
+        {/* Controls — always visible; start/resistance require connection */}
+        <Tabs
+          isConnected={isConnected}
+          setTargetPower={setTargetPower}
+          setTargetResistance={setTargetResistance}
+          onStart={handleWorkoutStart}
+          onStop={handleWorkoutStop}
+        />
       </div>
 
       {workoutRecord && (
