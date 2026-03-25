@@ -1,13 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
-
-const HR_SERVICE = 0x180d
-const HR_MEASUREMENT = 0x2a37
-
-function parseHeartRate(value: DataView): number {
-  // Bit 0 of flags: 0 = UINT8 format, 1 = UINT16 format
-  const flags = value.getUint8(0)
-  return (flags & 0x01) ? value.getUint16(1, true) : value.getUint8(1)
-}
+import { HR_SERVICE, HR_MEASUREMENT, parseHeartRate } from '@/lib/hrm'
 
 export type HRMConnectionState = 'disconnected' | 'connecting' | 'connected' | 'error'
 

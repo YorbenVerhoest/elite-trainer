@@ -1,4 +1,4 @@
-import type { ConnectionState } from '../types/bluetooth'
+import type { ConnectionState } from '@/types/workout'
 
 interface Props {
   connectionState: ConnectionState

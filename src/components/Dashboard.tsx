@@ -1,4 +1,4 @@
-import type { TrainerMetrics } from '../types/bluetooth'
+import type { TrainerMetrics } from '@/types/workout'
 
 interface Props {
   metrics: TrainerMetrics
