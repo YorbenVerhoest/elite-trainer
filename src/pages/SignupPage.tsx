@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { AppLogo } from '@/components/AppLogo'
 import { PageShell } from '@/components/PageShell'
+import { Button } from '@/components/Button'
 
 export function SignupPage() {
   const { signUp } = useAuth()
@@ -63,13 +64,9 @@ export function SignupPage() {
 
               {error && <p className="text-sm text-red-400">{error}</p>}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all shadow-[0_0_16px_rgba(46,170,255,0.35)] hover:shadow-[0_0_24px_rgba(46,170,255,0.55)] disabled:shadow-none active:scale-95"
-              >
+              <Button type="submit" variant="primary" fullWidth disabled={loading}>
                 {loading ? 'Creating account…' : 'Create account'}
-              </button>
+              </Button>
             </form>
           </div>
 

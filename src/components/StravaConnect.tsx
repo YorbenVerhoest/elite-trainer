@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { useStrava } from '@/hooks/useStrava'
+import { Button } from '@/components/Button'
 
 interface Props {
   strava: ReturnType<typeof useStrava>
@@ -19,7 +20,7 @@ export function StravaConnect({ strava }: Props) {
         </span>
         <button
           onClick={strava.disconnect}
-          className="text-gray-600 hover:text-gray-400 transition-colors text-xs"
+          className="text-gray-600 hover:text-gray-400 transition-colors text-xs cursor-pointer"
         >
           disconnect
         </button>
@@ -53,19 +54,18 @@ export function StravaConnect({ strava }: Props) {
           />
         </div>
         <div className="flex gap-2">
-          <button
-            onClick={() => setShowSetup(false)}
-            className="flex-1 py-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
-          >
+          <Button variant="solid" color="gray" fullWidth size="sm" onClick={() => setShowSetup(false)}>
             Cancel
-          </button>
-          <button
-            onClick={() => strava.authorize(clientId.trim(), clientSecret.trim())}
+          </Button>
+          <Button
+            color="orange"
+            fullWidth
+            size="sm"
             disabled={!clientId.trim() || !clientSecret.trim()}
-            className="flex-1 py-1.5 bg-orange-600 hover:bg-orange-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors"
+            onClick={() => strava.authorize(clientId.trim(), clientSecret.trim())}
           >
             Authorize
-          </button>
+          </Button>
         </div>
       </div>
     )
@@ -74,7 +74,7 @@ export function StravaConnect({ strava }: Props) {
   return (
     <button
       onClick={() => setShowSetup(true)}
-      className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-300 transition-colors"
+      className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-300 transition-colors cursor-pointer"
     >
       <div className="w-2 h-2 rounded-full bg-gray-600" />
       Connect Strava

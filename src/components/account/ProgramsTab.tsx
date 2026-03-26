@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { usePrograms } from '@/hooks/usePrograms'
 import { Spinner } from '@/components/Spinner'
+import { Button } from '@/components/Button'
 import type { WorkoutStep } from '@/types/workout'
 
 function generateId() {
@@ -149,12 +150,9 @@ export function ProgramsTab() {
 
       {/* New program button */}
       {openId !== 'new' && (
-        <button
-          onClick={openNew}
-          className="self-start flex items-center gap-2 px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 rounded-lg text-sm font-medium transition-all active:scale-95"
-        >
-          <span className="text-base leading-none">+</span> New Program
-        </button>
+        <Button variant="ghost" onClick={openNew} className="self-start">
+          + New Program
+        </Button>
       )}
 
       {/* Inline editor — new program */}
@@ -178,16 +176,12 @@ export function ProgramsTab() {
               <span className="text-xs text-gray-600">Total: {formatTime(totalEditDuration)}</span>
             )}
             <div className="flex gap-2 ml-auto">
-              <button onClick={cancel} className="px-3 py-1.5 text-sm text-gray-500 hover:text-white transition-colors active:scale-95">
+              <button onClick={cancel} className="px-3 py-1.5 text-sm text-gray-500 hover:text-white transition-colors active:scale-95 cursor-pointer">
                 Cancel
               </button>
-              <button
-                onClick={save}
-                disabled={isSaving || editSteps.length === 0}
-                className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors active:scale-95"
-              >
+              <Button size="sm" onClick={save} disabled={isSaving || editSteps.length === 0}>
                 {isSaving ? 'Saving…' : 'Save Program'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -251,16 +245,12 @@ export function ProgramsTab() {
                       <span className="text-xs text-gray-600">Total: {formatTime(totalEditDuration)}</span>
                     )}
                     <div className="flex gap-2 ml-auto">
-                      <button onClick={cancel} className="px-3 py-1.5 text-sm text-gray-500 hover:text-white transition-colors active:scale-95">
+                      <button onClick={cancel} className="px-3 py-1.5 text-sm text-gray-500 hover:text-white transition-colors active:scale-95 cursor-pointer">
                         Cancel
                       </button>
-                      <button
-                        onClick={save}
-                        disabled={isSaving || editSteps.length === 0}
-                        className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg text-sm font-medium transition-colors active:scale-95"
-                      >
+                      <Button size="sm" onClick={save} disabled={isSaving || editSteps.length === 0}>
                         {isSaving ? 'Saving…' : 'Save Changes'}
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>

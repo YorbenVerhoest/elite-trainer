@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { Button } from '@/components/Button'
 
 interface Props {
   isConnected: boolean
@@ -7,11 +8,12 @@ interface Props {
   onSetResistance: (level: number) => void
   onStart: () => void
   onStop: () => void
+  programRunning?: boolean
 }
 
 type Mode = 'power' | 'resistance'
 
-export function ResistanceControl({ isConnected, onSetPower, onSetResistance, onStart, onStop }: Props) {
+export function ResistanceControl({ isConnected, onSetPower, onSetResistance, onStart, onStop, programRunning = false }: Props) {
   const [mode, setMode] = useState<Mode>('power')
   const [powerValue, setPowerValue] = useState(150)
   const [resistanceValue, setResistanceValue] = useState(5)
@@ -38,7 +40,7 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
       <div className="flex rounded-lg overflow-hidden border border-gray-700">
         <button
           onClick={() => setMode('power')}
-          className={`flex-1 py-2 text-sm font-medium transition-colors ${
+          className={`flex-1 py-2 text-sm font-medium transition-colors cursor-pointer ${
             mode === 'power' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-700'
           }`}
         >
@@ -46,7 +48,7 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
         </button>
         <button
           onClick={() => setMode('resistance')}
-          className={`flex-1 py-2 text-sm font-medium transition-colors ${
+          className={`flex-1 py-2 text-sm font-medium transition-colors cursor-pointer ${
             mode === 'resistance' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-700'
           }`}
         >
@@ -76,7 +78,7 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
             step={5}
             value={powerValue}
             onChange={(e) => setPowerValue(Number(e.target.value))}
-            className="w-full accent-orange-400"
+            className="w-full accent-orange-400 cursor-pointer"
           />
           <div className="flex justify-between text-xs text-gray-500">
             <span>50 W</span>
@@ -105,7 +107,7 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
             step={1}
             value={resistanceValue}
             onChange={(e) => setResistanceValue(Number(e.target.value))}
-            className="w-full accent-blue-400"
+            className="w-full accent-blue-400 cursor-pointer"
           />
           <div className="flex justify-between text-xs text-gray-500">
             <span>1</span>
@@ -115,27 +117,19 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
       )}
 
       <div className="flex gap-3">
-        <button
-          onClick={handleApply}
-          disabled={!isConnected}
-          className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors active:scale-95"
-        >
+        <Button fullWidth onClick={handleApply} disabled={!isConnected}>
           Apply
-        </button>
-        <button
-          onClick={onStart}
-          disabled={!isConnected}
-          className="py-2.5 px-4 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors active:scale-95"
-        >
-          Start
-        </button>
-        <button
-          onClick={onStop}
-          disabled={!isConnected}
-          className="py-2.5 px-4 bg-red-800 hover:bg-red-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors active:scale-95"
-        >
-          Stop
-        </button>
+        </Button>
+        {!programRunning && (
+          <>
+            <Button color="green" onClick={onStart} disabled={!isConnected}>
+              Start
+            </Button>
+            <Button color="red" onClick={onStop} disabled={!isConnected}>
+              Stop
+            </Button>
+          </>
+        )}
       </div>
     </div>
   )

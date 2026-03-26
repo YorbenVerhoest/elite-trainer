@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useProgramRunner } from '@/hooks/useProgramRunner'
 import { usePrograms } from '@/hooks/usePrograms'
 import { Spinner } from '@/components/Spinner'
+import { Button } from '@/components/Button'
 import type { SavedProgram } from '@/api/programs'
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
   onSetPower: (watts: number) => void
   onStart: () => void
   onStop: () => void
+  onRunningChange?: (running: boolean) => void
 }
 
 function formatTime(seconds: number) {
@@ -25,10 +27,14 @@ function formatDuration(seconds: number) {
   return `${m}m`
 }
 
-export function ProgramEditor({ isConnected, onSetPower, onStart, onStop }: Props) {
+export function ProgramEditor({ isConnected, onSetPower, onStart, onStop, onRunningChange }: Props) {
   const { programs, loading } = usePrograms()
   const runner = useProgramRunner(onStart, onStop)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  useEffect(() => {
+    onRunningChange?.(runner.isRunning)
+  }, [runner.isRunning, onRunningChange])
 
   // Auto-select the first program when programs load
   useEffect(() => {
@@ -166,21 +172,19 @@ export function ProgramEditor({ isConnected, onSetPower, onStart, onStop }: Prop
       {/* Start / Stop */}
       <div>
         {!runner.isRunning ? (
-          <button
+          <Button
+            color="green"
+            fullWidth
             onClick={() => selected && runner.start(selected.steps, onSetPower)}
             disabled={!selected || selected.steps.length === 0 || !isConnected}
             title={!isConnected ? 'Connect your trainer to start' : undefined}
-            className="w-full py-2.5 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors active:scale-95"
           >
             {isConnected ? 'Start Workout' : 'Connect Trainer to Start'}
-          </button>
+          </Button>
         ) : (
-          <button
-            onClick={runner.stop}
-            className="w-full py-2.5 bg-red-800 hover:bg-red-700 text-white rounded-lg font-medium transition-colors active:scale-95"
-          >
+          <Button color="red" fullWidth onClick={runner.stop}>
             Stop Workout
-          </button>
+          </Button>
         )}
       </div>
     </div>

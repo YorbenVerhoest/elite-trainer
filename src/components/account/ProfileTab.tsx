@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { getProfile, updateDisplayName, updatePassword } from '@/api/profile'
+import { Button } from '@/components/Button'
 
 function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
   return (
@@ -26,19 +27,20 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 type Status = 'idle' | 'saving' | 'saved' | 'error'
 
 function SaveButton({ status, label = 'Save' }: { status: Status; label?: string }) {
+  const color =
+    status === 'saved' ? 'green' :
+    status === 'error' ? 'red' : 'gray'
+
   return (
-    <button
+    <Button
       type="submit"
+      variant="ghost"
+      color={color}
       disabled={status === 'saving'}
-      className={`self-start px-4 py-2 rounded-lg text-sm font-medium transition-all active:scale-95 ${
-        status === 'saved'  ? 'bg-green-700/40 text-green-300 border border-green-600/50' :
-        status === 'error'  ? 'bg-red-800/40 text-red-300 border border-red-700/50' :
-        status === 'saving' ? 'bg-gray-700 text-gray-400 cursor-not-allowed' :
-                              'bg-gray-700 hover:bg-gray-600 text-white'
-      }`}
+      className="self-start"
     >
       {status === 'saving' ? 'Saving…' : status === 'saved' ? 'Saved ✓' : status === 'error' ? 'Error' : label}
-    </button>
+    </Button>
   )
 }
 

@@ -2,6 +2,7 @@ import type { WorkoutRecord } from '@/types/workout'
 import type { useStrava } from '@/hooks/useStrava'
 import type { SaveStatus } from '@/hooks/useWorkouts'
 import { computeStats, formatDuration } from '@/lib/workoutStats'
+import { Button } from '@/components/Button'
 
 interface Props {
   record: WorkoutRecord
@@ -49,7 +50,7 @@ function StravaStatus({
         <span className="text-sm text-gray-500">Connect Strava in the header to auto-upload.</span>
         <button
           onClick={() => strava.downloadTCX(record)}
-          className="text-sm text-gray-400 hover:text-white transition-colors active:scale-95"
+          className="text-sm text-gray-400 hover:text-white transition-colors active:scale-95 cursor-pointer"
         >
           ↓ Download TCX
         </button>
@@ -92,13 +93,13 @@ function StravaStatus({
         <div className="flex gap-2 shrink-0">
           <button
             onClick={() => strava.uploadWorkout(record)}
-            className="text-sm text-orange-400 hover:text-orange-300 transition-colors active:scale-95"
+            className="text-sm text-orange-400 hover:text-orange-300 transition-colors active:scale-95 cursor-pointer"
           >
             Retry
           </button>
           <button
             onClick={() => strava.downloadTCX(record)}
-            className="text-sm text-gray-400 hover:text-white transition-colors active:scale-95"
+            className="text-sm text-gray-400 hover:text-white transition-colors active:scale-95 cursor-pointer"
           >
             ↓ TCX
           </button>
@@ -109,19 +110,12 @@ function StravaStatus({
 
   return (
     <div className="flex gap-2">
-      <button
-        onClick={() => strava.uploadWorkout(record)}
-        className="flex-1 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-sm font-medium transition-colors active:scale-95"
-      >
+      <Button color="orange" fullWidth onClick={() => strava.uploadWorkout(record)}>
         Upload to Strava
-      </button>
-      <button
-        onClick={() => strava.downloadTCX(record)}
-        className="py-2 px-4 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors active:scale-95"
-        title="Download as TCX file"
-      >
+      </Button>
+      <Button variant="solid" color="gray" onClick={() => strava.downloadTCX(record)} title="Download as TCX file">
         ↓ TCX
-      </button>
+      </Button>
     </div>
   )
 }
@@ -140,7 +134,7 @@ export function WorkoutSummary({ record, onClose, strava, saveStatus, savedWorko
           <h2 className="text-lg font-bold">Workout Summary</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-white transition-colors text-xl leading-none hover:scale-110 active:scale-90 transition-transform"
+            className="text-gray-500 hover:text-white transition-colors text-xl leading-none hover:scale-110 active:scale-90 cursor-pointer"
           >
             ×
           </button>

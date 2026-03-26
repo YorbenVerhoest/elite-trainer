@@ -1,4 +1,5 @@
 import type { ConnectionState } from '@/types/workout'
+import { Button } from '@/components/Button'
 
 interface Props {
   connectionState: ConnectionState
@@ -42,20 +43,13 @@ export function ConnectScreen({ connectionState, error, onConnect, onDisconnect 
       )}
 
       {!isConnected ? (
-        <button
-          onClick={onConnect}
-          disabled={isConnecting}
-          className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all shadow-[0_0_16px_rgba(46,170,255,0.35)] hover:shadow-[0_0_24px_rgba(46,170,255,0.55)] disabled:shadow-none active:scale-95"
-        >
+        <Button variant="primary" size="lg" onClick={onConnect} disabled={isConnecting}>
           {isConnecting ? 'Connecting...' : 'Connect Trainer'}
-        </button>
+        </Button>
       ) : (
-        <button
-          onClick={onDisconnect}
-          className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 hover:text-white rounded-lg font-medium transition-colors"
-        >
+        <Button variant="secondary" size="lg" onClick={onDisconnect}>
           Disconnect
-        </button>
+        </Button>
       )}
     </div>
   )

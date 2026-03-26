@@ -27,7 +27,7 @@ export function HistoryPage() {
             </Link>
             <button
               onClick={signOut}
-              className="text-sm text-gray-600 hover:text-gray-400 transition-colors"
+              className="text-sm text-gray-600 hover:text-gray-400 transition-colors cursor-pointer"
             >
               Sign out
             </button>
