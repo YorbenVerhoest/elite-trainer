@@ -33,3 +33,22 @@ export interface WorkoutRecord {
   durationSeconds: number
   dataPoints: WorkoutDataPoint[]
 }
+
+/** A saved workout row from the `workouts` table (denormalized stats, no data points) */
+export interface WorkoutSummaryRow {
+  id: string
+  startedAt: Date
+  durationSeconds: number
+  avgPower: number | null
+  maxPower: number | null
+  avgCadence: number | null
+  avgHR: number | null
+  distanceKm: number | null
+  calories: number | null
+  stravaActivityId: string | null
+}
+
+/** A fully loaded saved workout: summary + raw data points */
+export interface SavedWorkout extends WorkoutSummaryRow {
+  dataPoints: WorkoutDataPoint[]
+}

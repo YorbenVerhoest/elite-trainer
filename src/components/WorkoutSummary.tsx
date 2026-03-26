@@ -1,11 +1,14 @@
 import type { WorkoutRecord } from '@/types/workout'
 import type { useStrava } from '@/hooks/useStrava'
+import type { SaveStatus } from '@/hooks/useWorkouts'
 import { computeStats, formatDuration } from '@/lib/workoutStats'
 
 interface Props {
   record: WorkoutRecord
   onClose: () => void
   strava: ReturnType<typeof useStrava>
+  saveStatus?: SaveStatus
+  savedWorkoutId?: string | null
 }
 
 
@@ -120,7 +123,8 @@ function StravaStatus({
   )
 }
 
-export function WorkoutSummary({ record, onClose, strava }: Props) {
+export function WorkoutSummary({ record, onClose, strava, saveStatus, savedWorkoutId }: Props) {
+  void savedWorkoutId // available for future "View in history" link
   const stats = computeStats(record)
 
   return (
@@ -175,6 +179,27 @@ export function WorkoutSummary({ record, onClose, strava }: Props) {
             />
           )}
         </div>
+
+        {/* Save status */}
+        {saveStatus && saveStatus !== 'idle' && (
+          <div className="flex items-center gap-2 text-xs">
+            {saveStatus === 'saving' && (
+              <>
+                <div className="w-3 h-3 border border-blue-400 border-t-transparent rounded-full animate-spin" />
+                <span className="text-gray-500">Saving…</span>
+              </>
+            )}
+            {saveStatus === 'saved' && (
+              <>
+                <span className="text-green-400">✓</span>
+                <span className="text-gray-500">Saved to Elite Trainer</span>
+              </>
+            )}
+            {saveStatus === 'error' && (
+              <span className="text-red-400">Could not save workout</span>
+            )}
+          </div>
+        )}
 
         {/* Strava status */}
         <div className="border-t border-gray-700 pt-4">
