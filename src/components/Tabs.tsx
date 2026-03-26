@@ -21,7 +21,7 @@ export function Tabs({ isConnected, setTargetPower, setTargetResistance, onStart
         <button
           onClick={() => setTab('manual')}
           className={`px-5 py-2 text-sm font-medium transition-colors ${
-            tab === 'manual' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800'
+            tab === 'manual' ? 'bg-gray-700 text-blue-400' : 'text-gray-500 hover:bg-gray-800 hover:text-gray-300'
           }`}
         >
           Manual
@@ -29,7 +29,7 @@ export function Tabs({ isConnected, setTargetPower, setTargetResistance, onStart
         <button
           onClick={() => setTab('program')}
           className={`px-5 py-2 text-sm font-medium transition-colors ${
-            tab === 'program' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-800'
+            tab === 'program' ? 'bg-gray-700 text-blue-400' : 'text-gray-500 hover:bg-gray-800 hover:text-gray-300'
           }`}
         >
           Program

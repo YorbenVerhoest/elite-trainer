@@ -27,8 +27,8 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
   }
 
   return (
-    <div className="bg-gray-800 rounded-xl p-5 flex flex-col gap-5">
-      <h2 className="text-sm uppercase tracking-widest text-gray-400">Manual Control</h2>
+    <div className="bg-gray-800 rounded-xl p-5 flex flex-col gap-5 border border-gray-700/50">
+      <h2 className="text-xs uppercase tracking-widest text-gray-500">Manual Control</h2>
 
       {/* Mode toggle */}
       <div className="flex rounded-lg overflow-hidden border border-gray-700">
@@ -54,7 +54,7 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-400">Target Power</span>
-            <span className="text-2xl font-bold text-orange-400 tabular-nums">
+            <span className="text-3xl font-bold text-orange-400 tabular-nums font-sport">
               {powerValue} W
             </span>
           </div>
@@ -76,7 +76,7 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-400">Resistance Level</span>
-            <span className="text-2xl font-bold text-blue-400 tabular-nums">
+            <span className="text-3xl font-bold text-blue-400 tabular-nums font-sport">
               {resistanceValue}
             </span>
           </div>

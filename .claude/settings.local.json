@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(grep -r \"className=\"\"\" /c/Users/yorbe/WebstormProjects/elite-trainer/src/components/*.tsx)",
+      "Bash(xargs grep:*)"
     ]
   }
 }

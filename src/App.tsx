@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { useBluetooth } from '@/hooks/useBluetooth'
+import { useMockBluetooth } from '@/hooks/useMockBluetooth'
 import { useStrava } from '@/hooks/useStrava'
 import { useHRM } from '@/hooks/useHRM'
 import { ConnectScreen } from '@/components/ConnectScreen'
@@ -12,6 +13,9 @@ import { WorkoutSummary } from '@/components/WorkoutSummary'
 import type { WorkoutRecord } from '@/types/workout'
 
 export default function App() {
+  const isMock = new URLSearchParams(window.location.search).has('mock')
+  const realTrainer = useBluetooth()
+  const mockTrainer = useMockBluetooth()
   const {
     connectionState,
     metrics,
@@ -25,7 +29,7 @@ export default function App() {
     setExternalHeartRate,
     startRecording,
     stopRecording,
-  } = useBluetooth()
+  } = isMock ? mockTrainer : realTrainer
 
   const strava = useStrava()
   const hrm = useHRM()
@@ -69,15 +73,31 @@ export default function App() {
   const displayMetrics = { ...metrics, heartRate: hrm.heartRate ?? metrics.heartRate }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <Toaster position="bottom-center" toastOptions={{ style: { background: '#1f2937', color: '#fff', border: '1px solid #374151' } }} />
+    <div
+      className="min-h-screen bg-gray-900 text-white"
+      style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '28px 28px' }}
+    >
+      {/* Top accent bar */}
+      <div className="h-px bg-gradient-to-r from-blue-500 via-orange-400 to-transparent" />
+
+      <Toaster position="bottom-center" toastOptions={{ style: { background: '#141830', color: '#fff', border: '1px solid #323863' } }} />
       <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6">
         {/* Header */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">Elite Trainer</h1>
-              <p className="text-sm text-gray-500">Elite Suito Pro controller</p>
+            <div className="flex items-center gap-3">
+              {/* Logo mark */}
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-orange-500 flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(46,170,255,0.4)]">
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11 21H5L13 3H19L14 11H20L11 21Z"/>
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-2xl font-extrabold tracking-widest uppercase font-sport bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent leading-none">
+                  Elite Trainer
+                </h1>
+                <p className="text-xs text-gray-500 tracking-widest uppercase mt-0.5">Elite Suito Pro</p>
+              </div>
             </div>
             <ConnectScreen
               connectionState={connectionState}
