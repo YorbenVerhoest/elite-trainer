@@ -13,6 +13,8 @@ import { HRMConnect } from '@/components/HRMConnect'
 import { Dashboard } from '@/components/Dashboard'
 import { Tabs } from '@/components/Tabs'
 import { WorkoutSummary } from '@/components/WorkoutSummary'
+import { AppLogo } from '@/components/AppLogo'
+import { PageShell } from '@/components/PageShell'
 import type { WorkoutRecord } from '@/types/workout'
 
 export function TrainerPage() {
@@ -84,32 +86,13 @@ export function TrainerPage() {
   const displayMetrics = { ...metrics, heartRate: hrm.heartRate ?? metrics.heartRate }
 
   return (
-    <div
-      className="min-h-screen bg-gray-900 text-white"
-      style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '28px 28px' }}
-    >
-      {/* Top accent bar */}
-      <div className="h-px bg-gradient-to-r from-blue-500 via-orange-400 to-transparent" />
-
+    <PageShell>
       <Toaster position="bottom-center" toastOptions={{ style: { background: '#152240', color: '#fff', border: '1px solid #2a4068' } }} />
       <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6 animate-fade-up" style={{ animationFillMode: 'both' }}>
         {/* Header */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-3">
-              {/* Logo mark */}
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-orange-500 flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(46,170,255,0.4)]">
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M11 21H5L13 3H19L14 11H20L11 21Z"/>
-                </svg>
-              </div>
-              <div>
-                <h1 className="text-2xl font-extrabold tracking-widest uppercase font-sport bg-gradient-to-r from-blue-400 to-orange-400 bg-clip-text text-transparent leading-none">
-                  Elite Trainer
-                </h1>
-                <p className="text-xs text-gray-500 tracking-widest uppercase mt-0.5">Elite Suito Pro</p>
-              </div>
-            </div>
+            <AppLogo title="Elite Trainer" subtitle="Elite Suito Pro" />
 
             <div className="flex items-center gap-4">
               <Link
@@ -160,6 +143,6 @@ export function TrainerPage() {
           savedWorkoutId={workouts.savedWorkoutId}
         />
       )}
-    </div>
+    </PageShell>
   )
 }

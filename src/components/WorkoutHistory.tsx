@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { formatDuration } from '@/lib/workoutStats'
+import { Spinner } from '@/components/Spinner'
 import type { WorkoutSummaryRow } from '@/types/workout'
 
 interface Props {
@@ -13,11 +14,7 @@ function formatDate(date: Date): string {
 
 export function WorkoutHistory({ workouts, loading }: Props) {
   if (loading) {
-    return (
-      <div className="flex justify-center py-12">
-        <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    )
+    return <Spinner centered />
   }
 
   if (workouts.length === 0) {

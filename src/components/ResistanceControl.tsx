@@ -15,13 +15,17 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
   const [mode, setMode] = useState<Mode>('power')
   const [powerValue, setPowerValue] = useState(150)
   const [resistanceValue, setResistanceValue] = useState(5)
+  const [activePower, setActivePower] = useState<number | null>(null)
+  const [activeResistance, setActiveResistance] = useState<number | null>(null)
 
   function handleApply() {
     if (mode === 'power') {
       onSetPower(powerValue)
+      setActivePower(powerValue)
       toast.success(`Target power set to ${powerValue} W`)
     } else {
       onSetResistance(resistanceValue)
+      setActiveResistance(resistanceValue)
       toast.success(`Resistance set to level ${resistanceValue}`)
     }
   }
@@ -53,7 +57,14 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
       {mode === 'power' ? (
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-400">Target Power</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-400">Target Power</span>
+              {activePower !== null && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-400 border border-orange-500/30">
+                  Active: {activePower} W
+                </span>
+              )}
+            </div>
             <span className="text-3xl font-bold text-orange-400 tabular-nums font-sport">
               {powerValue} W
             </span>
@@ -75,7 +86,14 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
       ) : (
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-400">Resistance Level</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-400">Resistance Level</span>
+              {activeResistance !== null && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                  Active: {activeResistance}
+                </span>
+              )}
+            </div>
             <span className="text-3xl font-bold text-blue-400 tabular-nums font-sport">
               {resistanceValue}
             </span>
