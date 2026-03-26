@@ -1,1 +1,47 @@
 @import "tailwindcss";
+
+@theme {
+  /* ─── Display font: sporty condensed for metrics & headings ─── */
+  --font-sport: 'Barlow Condensed', sans-serif;
+
+  /* ─── Surfaces: deep midnight slate with a cool blue-purple cast ─── */
+  --color-gray-50:  #f0f2ff;
+  --color-gray-100: #e2e5f5;
+  --color-gray-200: #c5cae8;
+  --color-gray-300: #9da5c8;
+  --color-gray-400: #717aa8;
+  --color-gray-500: #4c5480;
+  --color-gray-600: #323863;
+  --color-gray-700: #1e2448;
+  --color-gray-800: #141830;
+  --color-gray-900: #0b0d1f;
+
+  /* ─── Primary: Electric cyan-blue ─── */
+  --color-blue-300: #93d8ff;
+  --color-blue-400: #60c8ff;
+  --color-blue-500: #2eaaff;
+  --color-blue-600: #1a8eff;
+  --color-blue-700: #1478dd;
+
+  /* ─── Power: Neon fire-orange ─── */
+  --color-orange-300: #ffb380;
+  --color-orange-400: #ff8040;
+  --color-orange-500: #ff6010;
+  --color-orange-600: #e84e00;
+
+  /* ─── Speed / Success: Neon green ─── */
+  --color-green-400: #30ff80;
+  --color-green-500: #00e060;
+  --color-green-600: #00b84e;
+  --color-green-700: #00903c;
+
+  /* ─── Heart rate / Danger: Hot coral-red ─── */
+  --color-red-400: #ff5070;
+  --color-red-500: #ff2050;
+  --color-red-700: #cc0030;
+  --color-red-800: #a80025;
+
+  /* ─── Calories / Warning: Electric amber ─── */
+  --color-yellow-400: #ffe040;
+  --color-yellow-500: #ffc800;
+}

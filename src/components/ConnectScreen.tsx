@@ -1,4 +1,4 @@
-import type { ConnectionState } from '../types/bluetooth'
+import type { ConnectionState } from '@/types/workout'
 
 interface Props {
   connectionState: ConnectionState
@@ -14,15 +14,20 @@ export function ConnectScreen({ connectionState, error, onConnect, onDisconnect 
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center gap-3">
-        <div
-          className={`w-3 h-3 rounded-full ${
-            isConnected
-              ? 'bg-green-500'
-              : isConnecting
-                ? 'bg-yellow-400 animate-pulse'
-                : 'bg-gray-400'
-          }`}
-        />
+        <div className="relative w-3 h-3 shrink-0">
+          {isConnected && (
+            <div className="absolute inset-0 rounded-full bg-green-500 opacity-40 blur-[3px] scale-150" />
+          )}
+          <div
+            className={`relative w-3 h-3 rounded-full ${
+              isConnected
+                ? 'bg-green-500'
+                : isConnecting
+                  ? 'bg-yellow-400 animate-pulse'
+                  : 'bg-gray-600'
+            }`}
+          />
+        </div>
         <span className="text-sm font-medium text-gray-300">
           {isConnected
             ? 'Connected to Elite Suito Pro'
@@ -40,14 +45,14 @@ export function ConnectScreen({ connectionState, error, onConnect, onDisconnect 
         <button
           onClick={onConnect}
           disabled={isConnecting}
-          className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
+          className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all shadow-[0_0_16px_rgba(46,170,255,0.35)] hover:shadow-[0_0_24px_rgba(46,170,255,0.55)] disabled:shadow-none"
         >
           {isConnecting ? 'Connecting...' : 'Connect Trainer'}
         </button>
       ) : (
         <button
           onClick={onDisconnect}
-          className="px-6 py-2.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors"
+          className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 hover:text-white rounded-lg font-medium transition-colors"
         >
           Disconnect
         </button>

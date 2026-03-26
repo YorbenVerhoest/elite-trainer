@@ -1,4 +1,4 @@
-import type { useHRM } from '../hooks/useHRM'
+import type { useHRM } from '@/hooks/useHRM'
 
 interface Props {
   hrm: ReturnType<typeof useHRM>

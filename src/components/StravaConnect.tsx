@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { useStrava } from '../hooks/useStrava'
+import type { useStrava } from '@/hooks/useStrava'
 
 interface Props {
   strava: ReturnType<typeof useStrava>
