@@ -100,21 +100,21 @@ export function ResistanceControl({ isConnected, onSetPower, onSetResistance, on
         <button
           onClick={handleApply}
           disabled={!isConnected}
-          className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
+          className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors active:scale-95"
         >
           Apply
         </button>
         <button
           onClick={onStart}
           disabled={!isConnected}
-          className="py-2.5 px-4 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
+          className="py-2.5 px-4 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors active:scale-95"
         >
           Start
         </button>
         <button
           onClick={onStop}
           disabled={!isConnected}
-          className="py-2.5 px-4 bg-red-800 hover:bg-red-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
+          className="py-2.5 px-4 bg-red-800 hover:bg-red-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors active:scale-95"
         >
           Stop
         </button>

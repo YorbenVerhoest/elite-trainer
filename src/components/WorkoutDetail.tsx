@@ -121,7 +121,7 @@ export function WorkoutDetail({ workout }: Props) {
               />
               <YAxis tick={{ fontSize: 10, fill: '#4c5480' }} axisLine={false} tickLine={false} />
               <Tooltip
-                contentStyle={{ background: '#141830', border: '1px solid #323863', borderRadius: 8, fontSize: 12 }}
+                contentStyle={{ background: '#152240', border: '1px solid #2a4068', borderRadius: 8, fontSize: 12 }}
                 labelFormatter={(ms: number) => formatDuration(Math.round(ms / 1000))}
                 formatter={(val: number, name: string) => [
                   `${val} ${name === 'power' ? 'W' : 'bpm'}`,

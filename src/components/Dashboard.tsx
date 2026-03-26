@@ -22,7 +22,10 @@ function MetricCard({
   return (
     <div className={`bg-gray-800 rounded-xl p-5 flex flex-col items-center gap-1 border-t-2 ${borderColor} ${glow}`}>
       <span className="text-xs uppercase tracking-widest text-gray-500">{label}</span>
-      <span className={`text-5xl font-bold tabular-nums font-sport leading-none ${color}`}>
+      <span
+        key={value ?? 'null'}
+        className={`text-5xl font-bold tabular-nums font-sport leading-none ${color} animate-value-pop`}
+      >
         {value !== null ? value.toFixed(0) : '--'}
       </span>
       <span className="text-xs text-gray-600 uppercase tracking-wider">{unit}</span>
@@ -39,7 +42,7 @@ export function Dashboard({ metrics }: Props) {
         unit="watts"
         color="text-orange-400"
         borderColor="border-orange-400"
-        glow="shadow-[0_4px_24px_rgba(255,128,64,0.12)]"
+        glow="shadow-[0_4px_24px_rgba(255,120,32,0.12)]"
       />
       <MetricCard
         label="Cadence"
@@ -47,7 +50,7 @@ export function Dashboard({ metrics }: Props) {
         unit="rpm"
         color="text-blue-400"
         borderColor="border-blue-400"
-        glow="shadow-[0_4px_24px_rgba(96,200,255,0.12)]"
+        glow="shadow-[0_4px_24px_rgba(90,171,255,0.12)]"
       />
       <MetricCard
         label="Speed"
@@ -55,7 +58,7 @@ export function Dashboard({ metrics }: Props) {
         unit="km/h"
         color="text-green-400"
         borderColor="border-green-400"
-        glow="shadow-[0_4px_24px_rgba(48,255,128,0.12)]"
+        glow="shadow-[0_4px_24px_rgba(52,217,195,0.12)]"
       />
       <MetricCard
         label="Heart Rate"
@@ -63,7 +66,7 @@ export function Dashboard({ metrics }: Props) {
         unit="bpm"
         color="text-red-400"
         borderColor="border-red-400"
-        glow="shadow-[0_4px_24px_rgba(255,80,112,0.12)]"
+        glow="shadow-[0_4px_24px_rgba(255,110,136,0.12)]"
       />
     </div>
   )

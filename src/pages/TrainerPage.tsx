@@ -91,8 +91,8 @@ export function TrainerPage() {
       {/* Top accent bar */}
       <div className="h-px bg-gradient-to-r from-blue-500 via-orange-400 to-transparent" />
 
-      <Toaster position="bottom-center" toastOptions={{ style: { background: '#141830', color: '#fff', border: '1px solid #323863' } }} />
-      <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6">
+      <Toaster position="bottom-center" toastOptions={{ style: { background: '#152240', color: '#fff', border: '1px solid #2a4068' } }} />
+      <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6 animate-fade-up" style={{ animationFillMode: 'both' }}>
         {/* Header */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between flex-wrap gap-4">
@@ -113,10 +113,10 @@ export function TrainerPage() {
 
             <div className="flex items-center gap-4">
               <Link
-                to="/history"
+                to="/account"
                 className="text-sm text-gray-400 hover:text-white transition-colors"
               >
-                History
+                Account
               </Link>
               <button
                 onClick={signOut}

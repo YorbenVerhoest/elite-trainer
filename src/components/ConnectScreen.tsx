@@ -16,7 +16,7 @@ export function ConnectScreen({ connectionState, error, onConnect, onDisconnect 
       <div className="flex items-center gap-3">
         <div className="relative w-3 h-3 shrink-0">
           {isConnected && (
-            <div className="absolute inset-0 rounded-full bg-green-500 opacity-40 blur-[3px] scale-150" />
+            <div className="absolute inset-0 rounded-full bg-green-500 opacity-40 animate-ping" />
           )}
           <div
             className={`relative w-3 h-3 rounded-full ${
@@ -45,7 +45,7 @@ export function ConnectScreen({ connectionState, error, onConnect, onDisconnect 
         <button
           onClick={onConnect}
           disabled={isConnecting}
-          className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all shadow-[0_0_16px_rgba(46,170,255,0.35)] hover:shadow-[0_0_24px_rgba(46,170,255,0.55)] disabled:shadow-none"
+          className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all shadow-[0_0_16px_rgba(46,170,255,0.35)] hover:shadow-[0_0_24px_rgba(46,170,255,0.55)] disabled:shadow-none active:scale-95"
         >
           {isConnecting ? 'Connecting...' : 'Connect Trainer'}
         </button>

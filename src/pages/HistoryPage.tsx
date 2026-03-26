@@ -19,7 +19,7 @@ export function HistoryPage() {
     >
       <div className="h-px bg-gradient-to-r from-blue-500 via-orange-400 to-transparent" />
 
-      <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6">
+      <div className="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6 animate-fade-up" style={{ animationFillMode: 'both' }}>
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

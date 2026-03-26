@@ -1,47 +1,73 @@
 @import "tailwindcss";
 
+@keyframes value-pop {
+  0%   { opacity: 0.4; transform: scale(0.86); }
+  65%  { opacity: 1;   transform: scale(1.07); }
+  100% { opacity: 1;   transform: scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(22px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
 @theme {
+  /* ─── Custom animations ─── */
+  --animate-value-pop: value-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-fade-up:   fade-up  0.35s ease-out;
+  --animate-fade-in:   fade-in  0.2s  ease-out;
+  --animate-slide-up:  slide-up 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
   /* ─── Display font: sporty condensed for metrics & headings ─── */
   --font-sport: 'Barlow Condensed', sans-serif;
 
-  /* ─── Surfaces: deep midnight slate with a cool blue-purple cast ─── */
-  --color-gray-50:  #f0f2ff;
-  --color-gray-100: #e2e5f5;
-  --color-gray-200: #c5cae8;
-  --color-gray-300: #9da5c8;
-  --color-gray-400: #717aa8;
-  --color-gray-500: #4c5480;
-  --color-gray-600: #323863;
-  --color-gray-700: #1e2448;
-  --color-gray-800: #141830;
-  --color-gray-900: #0b0d1f;
+  /* ─── Surfaces: medium-dark navy — matches the blue in the logo ─── */
+  --color-gray-50:  #f0f5ff;
+  --color-gray-100: #dde6f5;
+  --color-gray-200: #b8c8e8;
+  --color-gray-300: #8aa4cc;
+  --color-gray-400: #5d7fab;
+  --color-gray-500: #3d5a85;
+  --color-gray-600: #2a4068;
+  --color-gray-700: #1d3054;
+  --color-gray-800: #152240;
+  --color-gray-900: #0e1828;
 
-  /* ─── Primary: Electric cyan-blue ─── */
-  --color-blue-300: #93d8ff;
-  --color-blue-400: #60c8ff;
-  --color-blue-500: #2eaaff;
-  --color-blue-600: #1a8eff;
-  --color-blue-700: #1478dd;
+  /* ─── Primary: Blue — left side of the logo gradient ─── */
+  --color-blue-300: #90c8ff;
+  --color-blue-400: #5aabff;
+  --color-blue-500: #2a8eff;
+  --color-blue-600: #1a76e8;
+  --color-blue-700: #1460c4;
 
-  /* ─── Power: Neon fire-orange ─── */
-  --color-orange-300: #ffb380;
-  --color-orange-400: #ff8040;
-  --color-orange-500: #ff6010;
-  --color-orange-600: #e84e00;
+  /* ─── Energy / Power: Orange — right side of the logo gradient ─── */
+  --color-orange-300: #ffbe8a;
+  --color-orange-400: #ff9a50;
+  --color-orange-500: #ff7820;
+  --color-orange-600: #f05e00;
 
-  /* ─── Speed / Success: Neon green ─── */
-  --color-green-400: #30ff80;
-  --color-green-500: #00e060;
-  --color-green-600: #00b84e;
-  --color-green-700: #00903c;
+  /* ─── Speed / Success: Teal — bridges blue and feels at home in navy ─── */
+  --color-green-400: #34d9c3;
+  --color-green-500: #18b8a4;
+  --color-green-600: #0e9486;
+  --color-green-700: #0a756a;
 
-  /* ─── Heart rate / Danger: Hot coral-red ─── */
-  --color-red-400: #ff5070;
-  --color-red-500: #ff2050;
-  --color-red-700: #cc0030;
-  --color-red-800: #a80025;
+  /* ─── Heart rate: Coral-pink — warm, harmonious with orange ─── */
+  --color-red-400: #ff6e88;
+  --color-red-500: #f04466;
+  --color-red-700: #c0223f;
+  --color-red-800: #9e1a33;
 
-  /* ─── Calories / Warning: Electric amber ─── */
-  --color-yellow-400: #ffe040;
-  --color-yellow-500: #ffc800;
+  /* ─── Calories / Warning: Amber — golden, sits between blue and orange ─── */
+  --color-yellow-400: #ffd060;
+  --color-yellow-500: #f0b030;
 }

@@ -36,17 +36,19 @@ export function Tabs({ isConnected, setTargetPower, setTargetResistance, onStart
         </button>
       </div>
 
-      {tab === 'manual' ? (
-        <ResistanceControl
-          isConnected={isConnected}
-          onSetPower={setTargetPower}
-          onSetResistance={setTargetResistance}
-          onStart={onStart}
-          onStop={onStop}
-        />
-      ) : (
-        <ProgramEditor isConnected={isConnected} onSetPower={setTargetPower} onStart={onStart} onStop={onStop} />
-      )}
+      <div key={tab} className="animate-fade-up" style={{ animationFillMode: 'both' }}>
+        {tab === 'manual' ? (
+          <ResistanceControl
+            isConnected={isConnected}
+            onSetPower={setTargetPower}
+            onSetResistance={setTargetResistance}
+            onStart={onStart}
+            onStop={onStop}
+          />
+        ) : (
+          <ProgramEditor isConnected={isConnected} onSetPower={setTargetPower} onStart={onStart} onStop={onStop} />
+        )}
+      </div>
     </div>
   )
 }

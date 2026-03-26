@@ -41,7 +41,7 @@ export function SignupPage() {
           </h1>
         </div>
 
-        <div className="bg-gray-800 border border-gray-700/50 rounded-2xl p-6 flex flex-col gap-5">
+        <div className="bg-gray-800 border border-gray-700/50 rounded-2xl p-6 flex flex-col gap-5 animate-slide-up" style={{ animationFillMode: 'both' }}>
           <h2 className="text-lg font-semibold">Create account</h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -75,7 +75,7 @@ export function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all shadow-[0_0_16px_rgba(46,170,255,0.35)] hover:shadow-[0_0_24px_rgba(46,170,255,0.55)] disabled:shadow-none"
+              className="py-2.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all shadow-[0_0_16px_rgba(46,170,255,0.35)] hover:shadow-[0_0_24px_rgba(46,170,255,0.55)] disabled:shadow-none active:scale-95"
             >
               {loading ? 'Creating account…' : 'Create account'}
             </button>

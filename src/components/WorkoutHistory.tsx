@@ -31,11 +31,12 @@ export function WorkoutHistory({ workouts, loading }: Props) {
 
   return (
     <div className="flex flex-col divide-y divide-gray-800">
-      {workouts.map((w) => (
+      {workouts.map((w, index) => (
         <Link
           key={w.id}
           to={`/history/${w.id}`}
-          className="flex items-center justify-between gap-4 py-4 hover:bg-gray-800/50 px-3 -mx-3 rounded-lg transition-colors group"
+          className="flex items-center justify-between gap-4 py-4 hover:bg-gray-800/50 px-3 -mx-3 rounded-lg transition-colors group animate-fade-up"
+          style={{ animationDelay: `${index * 55}ms`, animationFillMode: 'both' }}
         >
           <div className="flex flex-col gap-0.5 min-w-0">
             <span className="text-sm text-gray-300 group-hover:text-white transition-colors truncate">

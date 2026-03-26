@@ -28,6 +28,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       setUser(session?.user ?? null)
+      // Ensure a profile row exists whenever a session is established
+      if (session?.user) {
+        supabase.from('profiles').upsert({ id: session.user.id }, { onConflict: 'id' })
+      }
     })
 
     return () => listener.subscription.unsubscribe()
